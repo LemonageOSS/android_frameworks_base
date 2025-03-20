@@ -46,11 +46,6 @@ LOCAL_REQUIRED_MODULES := \
 	IconPackVictorSettingsOverlay \
 	IconPackVictorSystemUIOverlay \
 	IconPackVictorThemePickerOverlay \
-	IconPackSamAndroidOverlay \
-	IconPackSamLauncherOverlay \
-	IconPackSamSettingsOverlay \
-	IconPackSamSystemUIOverlay \
-	IconPackSamThemePickerOverlay \
 	IconPackKaiAndroidOverlay \
 	IconPackKaiLauncherOverlay \
 	IconPackKaiSettingsOverlay \

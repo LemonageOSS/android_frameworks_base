@@ -463,10 +463,11 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener, OnCo
     public void setQsExpansion(float fraction) {
         if (!isNaN(fraction) && mQsExpansion != fraction) {
             mQsExpansion = fraction;
-            dlog("set qs fraction " + mQsExpansion);
+            dlog("setQsExpansion: mQsExpansion = " + mQsExpansion);
             ScrimState scrimState = mState;
             if ((scrimState == ScrimState.SHADE_LOCKED || scrimState == ScrimState.KEYGUARD || scrimState == ScrimState.PULSING || scrimState == ScrimState.BUBBLE_EXPANDED) && mExpansionAffectsAlpha) {
                 applyAndDispatchExpansion();
+                dlog("setQsExpansion: applyAndDispatchExpansion");
             }
         }
     }
@@ -519,7 +520,9 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener, OnCo
             float f = mQsExpansion;
             if (f > 0.0f) {
                 mBehindAlpha = MathUtils.lerp(mBehindAlpha, mDefaultScrimAlpha, f);
+                dlog("applyExpansionToAlpha: mBehindAlpha = " + mBehindAlpha);
                 mBehindTint = ColorUtils.blendARGB(mBehindTint, ScrimState.SHADE_LOCKED.getBehindTint(), mQsExpansion);
+                dlog("applyExpansionToAlpha: mBehindTint = " + mBehindTint);
             }
         }
         if (isNaN(mBehindAlpha) || isNaN(mInFrontAlpha)) {
@@ -986,11 +989,15 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener, OnCo
                            Color.blue(attrColor));
         //int attrColor = Utils.getColorAccent(mScrimBehind.getContext()).getDefaultColor();
         //int defaultColor = Color.argb(Math.round(Color.alpha(attrColor) * 0.45f), Color.red(attrColor), Color.green(attrColor), Color.blue(attrColor));
+        dlog("updateThemeColors: defaultColor = " + defaultColor);
         int defaultColor2 = Utils.getColorAccent(mScrimBehind.getContext()).getDefaultColor();
+        dlog("updateThemeColors: defaultColor2 = " + defaultColor2);
         mColors.setMainColor(defaultColor);
         mColors.setSecondaryColor(defaultColor2);
         ColorExtractor.GradientColors gradientColors = mColors;
-        gradientColors.setSupportsDarkText(ColorUtils.calculateContrast(gradientColors.getMainColor(), -1) > 4.5d);
+        boolean supportsDarkText = ColorUtils.calculateContrast(gradientColors.getMainColor(), -1) > 4.5d;
+        gradientColors.setSupportsDarkText(supportsDarkText);
+        dlog("updateThemeColors: supportsDarkText = " + supportsDarkText);
         mNeedsDrawableColorUpdate = true;
     }
 

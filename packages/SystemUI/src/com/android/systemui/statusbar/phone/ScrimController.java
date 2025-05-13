@@ -26,6 +26,7 @@ import android.app.AlarmManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.os.SystemProperties;
 import android.os.Trace;
 import android.util.Log;
 import android.util.MathUtils;
@@ -75,7 +76,9 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener, OnCo
         Dumpable {
 
     static final String TAG = "ScrimController";
+    static final String TAG_CUSTOM = "ScrimControllerDebugExtra";
     private static final boolean DEBUG = Log.isLoggable(TAG, Log.DEBUG);
+    private static final boolean DEBUG_CUSTOM = SystemProperties.getBoolean("persist.sys.debug", false);
 
     /**
      * General scrim animation duration.
@@ -460,7 +463,7 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener, OnCo
     public void setQsExpansion(float fraction) {
         if (!isNaN(fraction) && mQsExpansion != fraction) {
             mQsExpansion = fraction;
-            Log.d("ScrimController", "set qs fraction" + mQsExpansion);
+            dlog("set qs fraction " + mQsExpansion);
             ScrimState scrimState = mState;
             if ((scrimState == ScrimState.SHADE_LOCKED || scrimState == ScrimState.KEYGUARD || scrimState == ScrimState.PULSING || scrimState == ScrimState.BUBBLE_EXPANDED) && mExpansionAffectsAlpha) {
                 applyAndDispatchExpansion();
@@ -1123,5 +1126,9 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener, OnCo
             mNeedsDrawableColorUpdate = true;
             scheduleUpdate();
         }
+    }
+
+    public static void dlog(String msg) {
+        if (DEBUG_CUSTOM) Log.d(TAG_CUSTOM, msg);
     }
 }
